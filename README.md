@@ -124,3 +124,6 @@ openssl ecparam -genkey -name secp384r1 -out server.key
 
 openssl req -new -x509 -sha256 -key server.key -out server.pem -days 3650
 ```
+
+## grpc 支持 ssl/ts
+https://blog.csdn.net/m0_46083365/article/details/103744750?utm_source=blogxgwz7

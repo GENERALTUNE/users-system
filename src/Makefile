@@ -22,11 +22,13 @@ ifeq ($(SYSTEM),Darwin)
 	GRPC_CPP_PLUGIN = grpc_cpp_plugin
 	GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-PROTOS_PATH = ../../protos
+PROTOS_PATH = ../protos
 
 vpath %.proto $(PROTOS_PATH)
 
-all: cpp_conn_mysql
+all: client  server
 
-cpp_conn_mysql: cpp_conn_mysql.cc 
+client: client.cc 
+	$(CXX) $^ $(LDFLAGS) -o $@
+server: server.cc 
 	$(CXX) $^ $(LDFLAGS) -o $@

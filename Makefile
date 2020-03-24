@@ -1,22 +1,22 @@
-BAZEL := "bazel"
+# BAZEL := "bazel"
 
-all: build website-deploy
+# all: build website-deploy
 
-website-install:
-    $(BAZEL) run @nodejs//:npm install
+# website-install:
+#     $(BAZEL) run @nodejs//:npm install
 
-website-start: website-install
-    $(BAZEL) run @nodejs//:npm start
+# website-start: website-install
+#     $(BAZEL) run @nodejs//:npm start
 
-website-build: website-install
-    $(BAZEL) run @nodejs//:npm run build
+# website-build: website-install
+#     $(BAZEL) run @nodejs//:npm run build
 
-website-deploy: website-install方式
-    $(BAZEL) run @nodejs//:npm run publish-gh-pages
+# website-deploy: website-install方式
+#     $(BAZEL) run @nodejs//:npm run publish-gh-pages
 
-build: website-build
-    $(BAZEL) build
+# build: website-build
+#     $(BAZEL) build
 
-clean:
-    $(BAZEL) clean --expunge
-    rm -rf website/node_modules website/i18n website/build website/package-lock.json
+# clean:
+#     $(BAZEL) clean --expunge
+#     rm -rf website/node_modules website/i18n website/build website/package-lock.json
