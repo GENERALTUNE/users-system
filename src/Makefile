@@ -22,11 +22,24 @@ ifeq ($(SYSTEM),Darwin)
 	GRPC_CPP_PLUGIN = grpc_cpp_plugin
 	GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-PROTOS_PATH = ../protos
+PROTOS_PATH = ./protos
+
+
+PROTO_CC :=  protoc
+INCLUDE  :=  ./
+PROTO_FLAGS := --cpp_out=$(INCLUDE)
+PROTO__SOURCES := ./protos
+obj-y          := $(PROTO__SOURCES:%.proto=$(INCLUDE)/%.pb.cc)
+obj-y          += $(PROTO__SOURCES:%.proto=$(INCLUDE)/%.pb.h)
+
 
 vpath %.proto $(PROTOS_PATH)
 
-all: client  server
+all: client  server $(obj-y)
+
+$(INCLUDE)/%.pb.cc: %.proto
+        $(PROTO_CC) $(PROTO_FLAGS) $^
+        @echo 'generate file' $@
 
 client: client.cc 
 	$(CXX) $^ $(LDFLAGS) -o $@
