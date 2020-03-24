@@ -146,8 +146,8 @@ int main(int argc, char** argv) {
     std::cout << "请输入你的账号密码"<<std::endl;
     std::string username;
     std::string password;
-    std::cin>>user>>password;                                                                                      86    std::cout<< "账号密码位："<<user << password<<std::endl;
-    std::string reply = user.Login(user);
+    std::cin>>username>>password;                                                                                      86    std::cout<< "账号密码位："<<user << password<<std::endl;
+    std::string reply = user.Login(username, password);
     
     std::cout << "User received: " << reply << std::endl;
 
