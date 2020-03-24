@@ -13,6 +13,9 @@ http://www.hal9k.com/cug/
 ## cgi
 http://www.gnu.org/software/cgicc/doc/index.html
 
+### 编译数据库连接语句
+ g++    cpp_conn_mysql.cc -L /usr/include/mysql   -L /usr/lib64/mysql -lmysqlclient
+
 ##  bazel
 
 ### 查看依赖图
@@ -100,6 +103,9 @@ source ~/.bash_profile
 ldconfig
 ```
 ## 参考
+c++ 持久化解决方案
+https://blog.csdn.net/dean_zhang5757/article/details/104845096
+https://www.codesynthesis.com/products/odb/doc/manual.xhtml
 windows下安装grpc
 https://blog.csdn.net/liyangbinbin/article/details/100134465
 ### travis 
@@ -108,3 +114,13 @@ https://www.cnblogs.com/morang/p/7228488.html
 https://www.geek-share.com/detail/2758685060.html
 ### bazel c++
 https://blog.csdn.net/elaine_bao/article/details/78668657
+### c++ 连接mysql
+https://blog.csdn.net/yuhan61659/article/details/82706072
+
+
+## 制作签名证书
+```shell
+openssl ecparam -genkey -name secp384r1 -out server.key
+
+openssl req -new -x509 -sha256 -key server.key -out server.pem -days 3650
+```
