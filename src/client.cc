@@ -142,13 +142,34 @@ int main(int argc, char** argv) {
 
     UserClient user(grpc::CreateChannel(
       "localhost:50051", grpc::InsecureChannelCredentials()));
+    std::string choose_func;
+    std::cout << "请选择功能: 1 登录  2 注册"<<std::endl;
+    std::cin >> choose_func ;
+    if ( choose_func == "1") {
+      // 登录逻辑
+      std::cout << "请输入你的账号"<<std::endl;
+      std::string username;
+      std::string password;
+      std::cin>>username;
+      std::cout << "请输入你的密码"<<std::endl;
+      std::cin>>password;  
+      std::cout<< "账号密码位："<<username << password<<std::endl;
+      std::string reply = user.Login(username, password);
+      std::cout << "User received: " << reply << std::endl;
 
-    std::cout << "请输入你的账号密码"<<std::endl;
-    std::string username;
-    std::string password;
-    std::cin>>username>>password;  
-	std::cout<< "账号密码位："<<username << password<<std::endl;
-    std::string reply = user.Login(username, password);
-    std::cout << "User received: " << reply << std::endl;
+
+
+    } else if (choose_func == "2") {
+      //注册逻辑
+
+
+
+    } else {
+      //输入错误！
+      std::cout<< "输入错误！"<<std::endl;
+      return 1;
+    }
+
+
   return 0;
 }
