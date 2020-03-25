@@ -86,23 +86,24 @@ class UserServiceImpl final : public User::Service {
    public:
   ~UserServiceImpl() {
   	// 销毁工作
-    this->Shutdown(); 
+   // this->Shutdown(); 
     // 数据库连接
     mysql_close( &mysql ); /* 关闭连接 */
 
   }
   Status Login(ServerContext* context, const UserLoginRequest* request,
                   UserLoginReply* reply) override {
-    std::string prefix("Hello ");
+    std::string ret_msg;
     std::cout<< "收到客户端登录信息"<< request->username() <<request->password()<< std::endl;
     // 设定数据库查询的编码格式为utf-8
     mysql_query(&mysql, "set names utf8");
     std::string query_sql("select * from user_info  where username='" +request->username()+ "' and password='"+ request->password() +"'");
 
-    if (mysql_query(&mysql, query_sql)) 
+    if (mysql_query(&mysql, query_sql.c_str())) 
     {
     	std::cout<< "数据库查询失败"<<mysql_error(&mysql) << std::endl;
-    	reply->set_message("数据库查询失败: " + mysql_error(&mysql));
+		ret_msg = mysql_error(&mysql);
+    	reply->set_message("数据库查询失败: " + ret_msg);
 
     } else {
 
@@ -127,9 +128,13 @@ class UserServiceImpl final : public User::Service {
 			while (column = mysql_fetch_row(res))
 			{
 				for (int i = 0; i<j; i++)
-					if (field[i] == "id_card_num") {
-						reply->set_message("身份证号码为: " + column[i]);
+				{
+					std::string field_tmp = field[i];
+					if (field_tmp == "id_card_num") {
+						ret_msg = column[i];
+						reply->set_message("身份证号码为: " + ret_msg);
 					}
+				}
 				// 	printf("%10s\t", column[i]);
 				// printf("\n");
 			}
