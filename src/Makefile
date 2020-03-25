@@ -24,28 +24,27 @@ ifeq ($(SYSTEM),Darwin)
 
 PROTOS_PATH = ./protos
 
-
 PROTO_CC :=  protoc
 INCLUDE  :=  ./
 PROTO_FLAGS := --cpp_out=$(INCLUDE)
 PROTO__SOURCES := ./protos
-obj-y          := $(PROTO__SOURCES:%.proto=$(INCLUDE)/%.pb.cc)
-obj-y          += $(PROTO__SOURCES:%.proto=$(INCLUDE)/%.pb.h)
+obj-y          := $(PROTO__SOURCES:%.proto=$(INCLUDE)/%.grpc.pb.cc)
+obj-y          += $(PROTO__SOURCES:%.proto=$(INCLUDE)/%.grpc.pb.h)
 
 
 vpath %.proto $(PROTOS_PATH)
 
-all: client  server $(obj-y)
+all: $(obj-y ) client  server 
 
 # $(INCLUDE)/%.pb.cc: %.proto
 #         $(PROTO_CC) $(PROTO_FLAGS) $^
 #         @echo 'generate file' $@
         
-.PRECIOUS: %.grpc.pb.cc
+# .PRECIOUS: %.grpc.pb.cc
 %.grpc.pb.cc: %.proto
 	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
 
-.PRECIOUS: %.pb.cc
+# .PRECIOUS: %.pb.cc
 %.pb.cc: %.proto
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
