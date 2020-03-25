@@ -37,9 +37,17 @@ vpath %.proto $(PROTOS_PATH)
 
 all: client  server $(obj-y)
 
-$(INCLUDE)/%.pb.cc: %.proto
-        $(PROTO_CC) $(PROTO_FLAGS) $^
-        @echo 'generate file' $@
+# $(INCLUDE)/%.pb.cc: %.proto
+#         $(PROTO_CC) $(PROTO_FLAGS) $^
+#         @echo 'generate file' $@
+        
+.PRECIOUS: %.grpc.pb.cc
+%.grpc.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
+
+.PRECIOUS: %.pb.cc
+%.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 client: client.cc 
 	$(CXX) $^ $(LDFLAGS) -o $@

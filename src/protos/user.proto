@@ -19,7 +19,7 @@ option java_package = "io.grpc.examples.User";
 option java_outer_classname = "UserProto";
 option objc_class_prefix = "HLW";
 
-package User;
+package user;
 
 // The Login service definition.
 service User {
