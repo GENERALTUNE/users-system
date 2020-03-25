@@ -24,19 +24,19 @@
 #include <grpcpp/grpcpp.h>
 
 #ifdef BAZEL_BUILD
-#include "examples/protos/User.grpc.pb.h"
+#include "examples/protos/user.grpc.pb.h"
 #else
-#include "User.grpc.pb.h"
+#include "user.grpc.pb.h"
 #endif
 
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
-using User::UserLoginRequest;
-using User::UserLoginReply;
-using User::UserRegisterRequest;
-using User::UserRegisterReply;
-using User::User;
+using user::UserLoginRequest;
+using user::UserLoginReply;
+using user::UserRegisterRequest;
+using user::UserRegisterReply;
+using user::User;
 
 
 

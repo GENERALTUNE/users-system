@@ -41,6 +41,7 @@ all: $(obj-y ) client  server
 #         @echo 'generate file' $@
         
 # .PRECIOUS: %.grpc.pb.cc
+# protoc -I ./protos --grpc_out=. --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin   user.proto 
 %.grpc.pb.cc: %.proto
 	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
 
