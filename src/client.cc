@@ -92,8 +92,8 @@ class UserClient {
     UserRegisterRequest request;
     request.set_username(username);
     request.set_password(password);
-    request.set_password(cardnum);
-    request.set_password(name);
+    request.set_cardnum(cardnum);
+    request.set_name(name);
 
     // Container for the data we expect from the server.
     UserRegisterReply reply;
@@ -153,15 +153,28 @@ int main(int argc, char** argv) {
       std::cin>>username;
       std::cout << "请输入你的密码"<<std::endl;
       std::cin>>password;  
-      std::cout<< "账号密码位："<<username << password<<std::endl;
+      std::cout<< "已输入账号密码为："<<username << password<<std::endl;
       std::string reply = user.Login(username, password);
-      std::cout << "User received: " << reply << std::endl;
-
+      std::cout << "服务器返回信息: " << reply << std::endl;
 
 
     } else if (choose_func == "2") {
       //注册逻辑
-
+      std::string username;
+      std::string password;
+      std::string cardnum;
+      std::string name;
+      std::cout << "请输入账号"<<std::endl;
+      std::cin >> username;
+      std::cout << "请输入密码"<<std::endl;
+      std::cin >> password;
+      std::cout << "请输入身份证号"<<std::endl;
+      std::cin >> cardnum;
+      std::cout << "请输入昵称"<<std::endl;
+      std::cin >> name;
+      std::cout<< "已输入账号密码身份证昵称为："<<username << password<<std::endl;
+      std::string reply = user.Register(username, password, cardnum, name);
+      std::cout << "服务器返回信息: " << reply << std::endl;
 
 
     } else {

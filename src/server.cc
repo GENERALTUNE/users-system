@@ -147,9 +147,24 @@ class UserServiceImpl final : public User::Service {
   Status Register(ServerContext* context, const UserRegisterRequest* request,
                   UserRegisterReply* reply) override {
 
-    std::string prefix("Hello ");
-     std::cout<< "收到客户端注册信息"<< request->username() <<request->password()<< std::endl;
-    reply->set_message(prefix + request->username());
+	std::string ret_msg;
+
+    std::cout<< "收到客户端注册信息"<< request->username() <<request->password()<<request->cardnum()<<request->name()<< std::endl;
+//	//可以想办法实现手动在控制台手动输入指令  
+	std::string  insert_sql = "insert into user_info (username, password, name, id_card_num, state)values ( '" + request->username() + "', '" + 
+		request->password() + "','" + request->name() + "','" + request->cardnum() + "','1');";
+    std::cout<< insert_sql << std::endl;
+	mysql_query(&mysql, "set names utf8");
+	if (mysql_query(&mysql, insert_sql.c_str()))        //执行SQL语句  
+	{
+		ret_msg = mysql_error(&mysql);
+		reply->set_message("注册失败: " + ret_msg);
+	}
+	else
+	{
+		reply->set_message("注册成功！: " + ret_msg);
+	}
+
     return Status::OK;
   }
 };
