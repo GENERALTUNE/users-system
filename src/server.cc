@@ -195,7 +195,7 @@ void RunServer() {
 
 
 
-	std::string server_address("106.14.56.249:3389");
+	std::string server_address("0.0.0.0:3389");
 	UserServiceImpl service;
 
 	ServerBuilder builder;
