@@ -49,9 +49,9 @@ all: $(obj-y ) client  server
 %.pb.cc: %.proto
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
-client: client.cc 
+client: user.pb.o user.grpc.pb.o client.o   
 	$(CXX) $^ $(LDFLAGS) -o $@
-server: server.cc 
+server: user.pb.o user.grpc.pb.o server.o 
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 clean:

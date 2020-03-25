@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  */
-
+#include <sstream>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -57,7 +57,7 @@ void read ( const std::string& filename, std::string& data ){
 class UserClient {
  public:
   UserClient(std::shared_ptr<Channel> channel)
-      : stub_(Greeter::NewStub(channel)) {}
+      : stub_(User::NewStub(channel)) {}
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
@@ -140,16 +140,15 @@ int main(int argc, char** argv) {
   // GreeterClient user(grpc::CreateChannel(
   //     "localhost:50051", channel_creds));
 
-    GreeterClient user(grpc::CreateChannel(
+    UserClient user(grpc::CreateChannel(
       "localhost:50051", grpc::InsecureChannelCredentials()));
 
     std::cout << "请输入你的账号密码"<<std::endl;
     std::string username;
     std::string password;
-    std::cin>>username>>password;                                                                                      86    std::cout<< "账号密码位："<<user << password<<std::endl;
+    std::cin>>username>>password;  
+	std::cout<< "账号密码位："<<username << password<<std::endl;
     std::string reply = user.Login(username, password);
-    
     std::cout << "User received: " << reply << std::endl;
-
   return 0;
 }

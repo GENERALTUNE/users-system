@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  */
-
+#include <sstream>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -41,14 +41,14 @@ using user::User;
 
 
 void banner(){
-  cout<<"Welcome to 注册登录系统\n";
-  cout<<" _______  _____  _     _ _______  ______ _______ __   _ _______ _______\n";
-  cout<<" |       |     | |_____| |______ |_____/ |______ | \\  | |       |______\n";
-  cout<<" |_____  |_____| |     | |______ |    \\_ |______ |  \\_| |_____  |______\n";
-  cout<<"\n";
-  cout<<"\"Privacy is the power to selectively reveal oneself to the world.\" \n";
-  cout<<"gerante\n";
-  cout<<"\n";
+	std::cout<<"Welcome to 注册登录系统\n";
+	std::cout<<" _______  _____  _     _ _______  ______ _______ __   _ _______ _______\n";
+	std::cout<<" |       |     | |_____| |______ |_____/ |______ | \\  | |       |______\n";
+	std::cout<<" |_____  |_____| |     | |______ |    \\_ |______ |  \\_| |_____  |______\n";
+	std::cout<<"\n";
+	std::cout<<"\"Privacy is the power to selectively reveal oneself to the world.\" \n";
+	std::cout<<"gerante\n";
+	std::cout<<"\n";
 }
 
 void read_fs ( const std::string& filename, std::string& data ){
@@ -69,7 +69,7 @@ class UserServiceImpl final : public User::Service {
   Status Login(ServerContext* context, const UserLoginRequest* request,
                   UserLoginReply* reply) override {
     std::string prefix("Hello ");
-    std::cout<< "收到客户端登录信息"<< request->username() <<request.password()<< std::endl;
+    std::cout<< "收到客户端登录信息"<< request->username() <<request->password()<< std::endl;
 
     reply->set_message(prefix + request->username());
 
@@ -79,7 +79,7 @@ class UserServiceImpl final : public User::Service {
                   UserRegisterReply* reply) override {
 
     std::string prefix("Hello ");
-     std::cout<< "收到客户端注册信息"<< request->username() <<request.password()<< std::endl;
+     std::cout<< "收到客户端注册信息"<< request->username() <<request->password()<< std::endl;
     reply->set_message(prefix + request->username());
     return Status::OK;
   }
