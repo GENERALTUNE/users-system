@@ -132,7 +132,7 @@ class UserServiceImpl final : public User::Service {
 					std::string field_tmp = field[i];
 					if (field_tmp == "id_card_num") {
 						ret_msg = column[i];
-						reply->set_message("身份证号码为: " + ret_msg);
+						reply->set_message("登录成功！身份证号码为: " + ret_msg);
 					}
 				}
 				// 	printf("%10s\t", column[i]);
