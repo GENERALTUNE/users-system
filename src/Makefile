@@ -46,6 +46,7 @@ all: $(obj-y ) client  server
 	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
 
 # .PRECIOUS: %.pb.cc
+# protoc -I ./protos --cpp_out=.   user.proto 
 %.pb.cc: %.proto
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
