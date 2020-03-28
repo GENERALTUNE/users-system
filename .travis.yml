@@ -9,7 +9,7 @@ language: cpp
 services:
   - mysql
 
-script: bazel test  //test:server_test
+script: install.sh 
 
 install:
   - OS=linux

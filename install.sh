@@ -1,9 +1,7 @@
 #!/bin/sh
 
-
-set -ex
-wget https://protobuf.googlecode.com/files/protobuf-2.4.1.tar.gz
-tar -xzvf protobuf-2.4.1.tar.gz
-cd protobuf-2.4.1 && ./configure --prefix=/usr && make && sudo make install
-
+# 测试用例
+bazel  test  //test:server_test
+# 项目构建
+bazel  build //src/protos:user_cc_grpc
 
