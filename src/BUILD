@@ -1,18 +1,3 @@
-cc_library(
-    name = "lib",
-    deps = [":user_cc_proto"],
-)
-
-cc_proto_library(
-    name = "user_cc_proto",
-    deps = [":user_proto"],
-)
-
-proto_library(
-    name = "user_proto",
-    srcs = ["../protos/user.proto"]
-)
-
 
 
 #load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
