@@ -9,9 +9,9 @@ language: cpp
 services:
   - mysql
 
-install: bazel test  //test:server_test
+script: bazel test  //test:server_test
 
-before_install:
+install:
   - OS=linux
   - ARCH=x86_64
   - sudo apt-get install openjdk-8-jdk
