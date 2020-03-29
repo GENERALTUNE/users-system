@@ -29,9 +29,9 @@
 // #include "user.grpc.pb.h"
 // #endif
 
-// using grpc::Channel;
-// using grpc::ClientContext;
-// using grpc::Status;
+using grpc::Channel;
+using grpc::ClientContext;
+using grpc::Status;
 // using user::UserLoginRequest;
 // using user::UserLoginReply;
 // using user::UserRegisterRequest;
@@ -54,10 +54,10 @@ void read ( const std::string& filename, std::string& data ){
 }
 
 
-// class UserClient {
-//  public:
-//   UserClient(std::shared_ptr<Channel> channel)
-//       : stub_(User::NewStub(channel)) {}
+class UserClient {
+ public:
+  UserClient(std::shared_ptr<Channel> channel)
+      : stub_(User::NewStub(channel)) {}
 
 //   // Assembles the client's payload, sends it and presents the response back
 //   // from the server.
@@ -117,7 +117,7 @@ void read ( const std::string& filename, std::string& data ){
 
 //  private:
 //   std::unique_ptr<User::Stub> stub_;
-// };
+};
 
 int main(int argc, char** argv) {
   // Instantiate the client. It requires a channel, out of which the actual RPCs
@@ -140,8 +140,8 @@ int main(int argc, char** argv) {
   // GreeterClient user(grpc::CreateChannel(
   //     "localhost:50051", channel_creds));
 
-    // UserClient user(grpc::CreateChannel(
-    //   "106.14.56.249:3389", grpc::InsecureChannelCredentials()));
+    UserClient user(grpc::CreateChannel(
+      "106.14.56.249:3389", grpc::InsecureChannelCredentials()));
     // std::string choose_func;
     // std::cout << "请选择功能: 1 登录  2 注册"<<std::endl;
     // std::cin >> choose_func ;
