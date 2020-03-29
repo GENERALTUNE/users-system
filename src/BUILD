@@ -16,3 +16,13 @@ cc_binary(
     ],
 )
 
+
+cc_binary(
+    name = "test",
+    srcs = ["test.cc"], 
+    deps = [
+        "//src/protos:user_cc_proto",
+        # "@com_github_grpc_grpc//:grpc++"
+    ],
+)
+
