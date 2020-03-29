@@ -53,7 +53,7 @@ before_deploy:
 
 deploy:
   provider: releases
-  api_key: b77082c8023d919aeab65152605f7d64831cbe36
+  api_key: $GITHUB_TOKEN
   file: src/client 
   skip_cleanup: true
 
