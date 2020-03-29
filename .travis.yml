@@ -55,7 +55,7 @@ deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   file_glob: true
-  file: src/* 
+  file: bazel-out/* 
   skip_cleanup: true
 
 
