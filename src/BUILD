@@ -9,8 +9,7 @@ cc_binary(
 
 cc_binary(
     name = "client",
-    srcs = ["client.cc"],
-    language = "c++",
+    srcs = ["client.cc"], 
     deps = [
     	"//src/protos:user_cc_proto",
     	"@com_github_grpc_grpc//:grpc++"
