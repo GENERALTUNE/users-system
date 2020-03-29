@@ -23,11 +23,11 @@
 
 #include <grpcpp/grpcpp.h>
 
-#ifdef BAZEL_BUILD
-#include "examples/protos/user.grpc.pb.h"
-#else
+// #ifdef BAZEL_BUILD
+// #include "examples/protos/user.grpc.pb.h"
+// #else
 #include "user.grpc.pb.h"
-#endif
+// #endif
 
 using grpc::Channel;
 using grpc::ClientContext;

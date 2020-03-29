@@ -12,7 +12,7 @@ cc_binary(
     srcs = ["client.cc"], 
     deps = [
     	"//src/protos:user_cc_proto",
-    	"@com_github_grpc_grpc//:grpc++"
+    	# "@com_github_grpc_grpc//:grpc++"
     ],
 )
 
