@@ -21,12 +21,12 @@
 #include <string>
 #include <fstream>
 
-// #include <grpcpp/grpcpp.h>
+#include <grpcpp/grpcpp.h>
 
 // #ifdef BAZEL_BUILD
 // #include "examples/protos/user.grpc.pb.h"
 // #else
-#include "user.grpc.pb.h"
+// #include "user.grpc.pb.h"
 // #endif
 
 // using grpc::Channel;
@@ -184,6 +184,8 @@ int main(int argc, char** argv) {
     // }
 
 	 std::cout << "请选择功能: 1 登录  2 注册"<<std::endl;
+	 // UserLoginRequest request;
+  //    request.set_username("zhangfei");
 
   return 0;
 }
