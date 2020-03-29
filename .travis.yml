@@ -53,7 +53,7 @@ before_deploy:
 
 deploy:
   provider: releases
-  api_key: "39f12a3d56053dbf21de6c6c761159265b1ee02a"
+  github_token: $GITHUB_TOKEN
   file: "src/client" 
   skip_cleanup: true
 
