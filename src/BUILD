@@ -7,7 +7,7 @@ load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 cc_binary(
     name = "server",
     srcs = ["server.cc"],
-    deps = ["//src/protos:user_cc_proto"]
+    deps = ["//src/protos:user_cc_grpc"]
 )
 
 
@@ -16,7 +16,7 @@ cc_binary(
     name = "client",
     srcs = ["client.cc"], 
     deps = [
-    	"//src/protos:user_cc_proto",
+    	"//src/protos:user_cc_grpc",
     	"@com_github_grpc_grpc//:grpc++"
     ]
 )
