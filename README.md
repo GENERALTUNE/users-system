@@ -1,15 +1,5 @@
 # 说明文档
 
-
-## Protocol Buffers
-https://blog.csdn.net/benben_2015/article/details/89457412
-
-## c++
-http://c.biancheng.net/cplus/90/
-https://www.runoob.com/cplusplus/cpp-multithreading.html
-https://en.wikibooks.org/wiki/C++_Programming
-http://www.hal9k.com/cug/
-
 ## cgi
 http://www.gnu.org/software/cgicc/doc/index.html
 

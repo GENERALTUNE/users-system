@@ -7,6 +7,6 @@ cc_binary(
 cc_binary(
     name = "client",
     srcs = ["client.cc"],
-    deps = [":user_cc_proto"],
+    deps = ["//src/protos:user_cc_proto"],
 )
 
