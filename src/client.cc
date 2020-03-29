@@ -26,7 +26,7 @@
 // #ifdef BAZEL_BUILD
 // #include "examples/protos/user.grpc.pb.h"
 // #else
-#include "user.grpc.pb.h"
+#include "src/protos/user.grpc.pb.h"
 // #endif
 
 using grpc::Channel;
