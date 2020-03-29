@@ -18,5 +18,5 @@ cc_grpc_library(
     name = "user_cc_grpc",
     srcs = [":user_proto"],
     deps = [":user_cc_proto"],
-    # grpc_only = True,
+    grpc_only = True,
 )
