@@ -140,8 +140,8 @@ int main(int argc, char** argv) {
   // GreeterClient user(grpc::CreateChannel(
   //     "localhost:50051", channel_creds));
 
-    UserClient user(grpc::CreateChannel(
-      "106.14.56.249:3389", grpc::InsecureChannelCredentials()));
+    // UserClient user(grpc::CreateChannel(
+    //   "106.14.56.249:3389", grpc::InsecureChannelCredentials()));
     // std::string choose_func;
     // std::cout << "请选择功能: 1 登录  2 注册"<<std::endl;
     // std::cin >> choose_func ;
