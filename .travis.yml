@@ -9,7 +9,7 @@ language: cpp
 services:
   - mysql
 
-script: ./install.sh 
+script: ./install.sh --sandbox_debug
 
 install:
   - OS=linux
