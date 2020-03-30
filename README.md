@@ -92,6 +92,20 @@ vim ~/.bash_profile
 source ~/.bash_profile
 ldconfig
 ```
+
+
+## ubuntu 16.04 
+ wget  https://cdn.mysql.com//Downloads/Connector-C++/libmysqlcppconn-dev_8.0.19-1ubuntu16.04_amd64.deb
+ sudo dpkg -i libmysqlcppconn-dev_8.0.19-1ubuntu16.04_amd64.deb
+ 
+ sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+下载
+  wget https://repo.mysql.com//mysql-apt-config_0.8.10-1_all.deb 
+<!-- dpkg -i -->
+<!-- rpm -ivh your-package -->
+
+
+
 ## 参考
 c++ 持久化解决方案
 https://blog.csdn.net/dean_zhang5757/article/details/104845096
