@@ -24,11 +24,11 @@
 #include <grpcpp/grpcpp.h>
 #include "mysql/mysql.h"
 
-#ifdef BAZEL_BUILD
-#include "examples/protos/user.grpc.pb.h"
-#else
-#include "user.grpc.pb.h"
-#endif
+// #ifdef BAZEL_BUILD
+// #include "examples/protos/user.grpc.pb.h"
+// #else
+#include "src/protos/user.grpc.pb.h"
+// #endif
 
 using grpc::Server;
 using grpc::ServerBuilder;
