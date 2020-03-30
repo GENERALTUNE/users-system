@@ -4,9 +4,12 @@ load("@rules_cc//cc:defs.bzl", "cc_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
+
 cc_binary(
     name = "server",
     srcs = ["server.cc"],
+    # hdrs = ["mysql.h"],
+    copts = ["-I/usr/include/mysql", "-L/usr/lib64/mysql", "-lmysqlclient"],
     deps = [
     	"//src/protos:user_cc_grpc",
     	"@com_github_grpc_grpc//:grpc++"
