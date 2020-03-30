@@ -10,6 +10,10 @@ cc_binary(
     srcs = ["server.cc"],
     # hdrs = ["mysql.h"],
     copts = ["-I/usr/include/mysql", "-L/usr/lib64/mysql", "-lmysqlclient"],
+    linkopts = [
+		# "-Lmysql-connector-cpp/build/out/lib64 -lmysqlcppconn8",
+		"-L/usr/lib64/mysql  -lmysqlclient",
+		 "-I/usr/include/mysql" ],
     deps = [
     	"//src/protos:user_cc_grpc",
     	"@com_github_grpc_grpc//:grpc++"
