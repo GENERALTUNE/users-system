@@ -20,3 +20,21 @@ cc_grpc_library(
     deps = [":user_cc_proto"],
     grpc_only = True,
 )
+
+proto_library(
+    name = "usersystem_proto",
+    srcs = ["usersystem.proto"],
+)
+
+cc_proto_library(
+    name = "usersystem_cc_proto",
+    deps = [":usersystem_proto"],
+)
+
+cc_grpc_library(
+    name = "usersystem_cc_grpc",
+    srcs = [":usersystem_proto"],
+    deps = [":usersystem_cc_proto"],
+    grpc_only = True,
+)
+

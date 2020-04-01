@@ -6,22 +6,15 @@ git_repository(
     tag = "release-1.8.1",
 )
 
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
 # **************************************************************
-#
-#
 # cpp
-#
 # **************************************************************
 
 # load("@build_stack_rules_proto//cpp:deps.bzl", "cpp_grpc_library")
-
 # cpp_grpc_library()
-
 # load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
-
 # grpc_deps()
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")

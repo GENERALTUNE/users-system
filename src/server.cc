@@ -1,318 +1,122 @@
-/*
- *
- * Copyright 2015 gRPC authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-#include <sstream>
+
 #include <iostream>
-#include <memory>
-#include <string>
-#include <fstream>
+#include "UserSystemImpl.h"
 
-#include <grpcpp/grpcpp.h>
-#include "mysql/mysql.h"
+static const char* CERT_PEM = R"cert(
+-----BEGIN CERTIFICATE-----
+MIIDYjCCAkoCCQDV3wW+0eb8yDANBgkqhkiG9w0BAQsFADBzMQswCQYDVQQGEwJD
+TjESMBAGA1UECAwJR3Vhbmdkb25nMREwDwYDVQQHDAhTaGVuemhlbjESMBAGA1UE
+CgwJTXlDb21wYW55MRUwEwYDVQQLDAxNeURlcGFydG1lbnQxEjAQBgNVBAMMCWxv
+Y2FsaG9zdDAeFw0xOTEwMjMwMjQ0MzZaFw0yMDEwMjIwMjQ0MzZaMHMxCzAJBgNV
+BAYTAkNOMRIwEAYDVQQIDAlHdWFuZ2RvbmcxETAPBgNVBAcMCFNoZW56aGVuMRIw
+EAYDVQQKDAlNeUNvbXBhbnkxFTATBgNVBAsMDE15RGVwYXJ0bWVudDESMBAGA1UE
+AwwJbG9jYWxob3N0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy3vs
+3ad/oZjaQ5UbNyhB+US0ZoSjFDZYi0Dh9zmZvAlu+rvAVVssOGMldX6IESS4IEit
+gNToPLaFX7s4/4yPyRELxAyFs08C1Sxv3Ka391xwzEot21Q9qfZ4+KsFp4nbAAWi
+zqMqLCQfxIcXzhkqzQmdJUCZCXPmXbQW0YervmNH4l2o4PPwHmvCGGSaGxalEVGi
+18+fIHflqMdYztoeycms5PEICMg4SczqB36emYp47sJcbmCWpdYSXBzttWgk0CKY
+gvWc9LLpGj9tgeywDRrrqyCYQK8+4847SSfws6Q38VzZ91uKxric9Q70cyGo3o0E
+RsIEYbmViq2HqabaIwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQCjSQzPB3NuuIxW
+OmVGfjXAWSqKueoszeqA9NBpuIKngQVRE0zBOA1lPGwP5Yo23Xb43SXgIE7sKwKI
+NqeYaNKPO9yzqEEua6iTgYDaxwVY84FRT7Qya3d9jlf8gRKRFFiby4h/SOQkGuoo
+SL+88RkDGjYdssUpm2/EC6QgJD94rDic5/nmCWUVvLSCnKbObf4pTHRsWyhvfUjI
+n9rKUlpQvdLaF4W6USEx58xDPcm2vX/3FSx1eZ+E+c8NMTo4a0B4F8G88rZ9E7Gj
+E+F7JWwE/NY93GoDP1/zllJc+QPKhAR7TEKFT9h2yvxGDU4Rv6ZTUDB53I/Exq3x
+ZbCrPrna
+-----END CERTIFICATE-----
+)cert";
 
-// #ifdef BAZEL_BUILD
-// #include "examples/protos/user.grpc.pb.h"
-// #else
-#include "src/protos/user.grpc.pb.h"
-// #endif
+static const char* KEY_PEM = R"key(
+-----BEGIN PRIVATE KEY-----
+MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDLe+zdp3+hmNpD
+lRs3KEH5RLRmhKMUNliLQOH3OZm8CW76u8BVWyw4YyV1fogRJLggSK2A1Og8toVf
+uzj/jI/JEQvEDIWzTwLVLG/cprf3XHDMSi3bVD2p9nj4qwWnidsABaLOoyosJB/E
+hxfOGSrNCZ0lQJkJc+ZdtBbRh6u+Y0fiXajg8/Aea8IYZJobFqURUaLXz58gd+Wo
+x1jO2h7Jyazk8QgIyDhJzOoHfp6ZinjuwlxuYJal1hJcHO21aCTQIpiC9Zz0suka
+P22B7LANGuurIJhArz7jzjtJJ/CzpDfxXNn3W4rGuJz1DvRzIajejQRGwgRhuZWK
+rYepptojAgMBAAECggEBAKdT7OAI0QeNrk5M2uhsjnPwb3iuMXx5hC5e2HJ4R1c9
+WqmMowiNxLtJrJAF0NZoH5FMsoByk9b5MIwcZS6f480v20EIGxnsKyQpOoN0BWu/
+9HHJvhPSHjMZnzi9ShUPY6uM9uh9fDx4KDdv779nKq8Y7MSpbi87w3/ii7EZo70W
+ZtO3FXTZA6VWjpsyTbH8MpCXEzHrE4C5i6TqEW9lN9X3UJpVr4aTmC/CroLPerDN
+azYUtEYjfwBSpdzN6j1rq8EehjrcUxDA0afekol44rAY1sfZJ2F5HlzRlmjPsuPh
+la3Gn3TPzE7kzVSIhrgObtEAltRvftCuKW/V24A37sECgYEA9FvAtYZ9TOAKd9R7
+fwYWEk4xo3IUpmvwOycbblceJoOskQFPh5DyA6/d2usUfQXnVDsyayW8Eahwu4H9
+Fk9Ydr38PkhlrfGrQ798p3sVGsQwuMx9+DTjeKLxNDMtp++0Ru30XD2xmTHe3lCB
+69Vbt47rhZPGWGgvltIuDKvoq7sCgYEA1S2pFi62IvT846bYIjmbrPEZezjR/nHG
+Sp2wmRRidb26k6T5S+Qle751hJ/3wdk34gKp59iE4KHhHsOIhbKbaFCJxMK2BXwf
+ofgWdhvD0kXz85fbYn1OLcfKGzwGzqrL9xi+rHOI6iiFUoVci/eas6fWDWkYptzX
+yzzS9G98QLkCgYEAuRXmWZiMv/XS+ADRqd0KSsM/hfWa/pMzWxq8BE+oXrPNuees
+PZrkNTa4bGEzG5+lIH/WKKJkWVukR+KluIhREV/F98cOfTpX5vDbkmAAFE4WOWNq
+5t3oji+dU1SQeGtvuWnzdQqlwsura+i+/8qTte1jJ8JOshf4M9zvVFnB2pECgYB9
+NOBG4xCe331YyDnRgDxrCwCIWwsbgv+P+6YpgsuBk/ntlcvGQy2wzGCBkOMXu9kS
+qbXZMlZ5CRsL0pRw0kJstkD0i9gUyJ5bpzaqEAynh+aMf/ielDJCuUF/VXY6FB7P
+9nynFQSpYztLCIEexELcmgsivUN5XeRwvjy4zHISIQKBgQCg2PZK8WTNU7JFo+Xc
+oX2Q/hXfxnw30ex0CFh0Wcp9p1n8BtHhq4HQChRnJi2X2luhbwxPE0wtD7K0zSfP
+PaEAg98A97pUViVnBxjgkOhnaS9o0Pk1zXGX/pa38R/5X8D8zSJpzzV+XQZv9Joc
+UZj0IsTK+lwzX+FkrN5Z5lQdvQ==
+-----END PRIVATE KEY-----
+)key";
 
-using grpc::Server;
-using grpc::ServerBuilder;
-using grpc::ServerContext;
-using grpc::Status;
-using user::UserLoginRequest;
-using user::UserLoginReply;
-using user::UserRegisterRequest;
-using user::UserRegisterReply;
-using user::User;
+constexpr auto DEFAULT_DB_URL = "mysqlx://root:106.14.56.249:33060@gerante";
 
+void RunServer(bool enableSsl, std::string& dbUrl)
+{
+    std::string server_address("0.0.0.0:3389");
+    UserSystemImpl service(dbUrl);
 
-MYSQL mysql;
-MYSQL_FIELD *fd;  //字段列数组
-char field[32][32];  //存字段名二维数组
-MYSQL_RES *res; //这个结构代表返回行的一个查询结果集
-MYSQL_ROW column; //一个行数据的类型安全(type-safe)的表示，表示数据行的列
-char query[150]; //查询语句
+    grpc::SslServerCredentialsOptions::PemKeyCertPair pemKeyCertPair;
+    pemKeyCertPair.private_key = std::string(KEY_PEM);
+    pemKeyCertPair.cert_chain = std::string(CERT_PEM);
+    grpc::SslServerCredentialsOptions credentialsOptions;
+    credentialsOptions.pem_root_certs = "";
+    credentialsOptions.pem_key_cert_pairs.emplace_back(pemKeyCertPair);
 
+    grpc::ServerBuilder builder;
+    builder.AddListeningPort(server_address, enableSsl ?
+                                             grpc::SslServerCredentials(credentialsOptions) :
+                                             grpc::InsecureServerCredentials());
+    builder.RegisterService(&service);
 
-bool InsertData();		//增
-bool ModifyData();		//改
-bool DeleteData();		//删
-bool QueryData();		//查
+    std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
+    std::cout << "Server listening on " << server_address << std::endl;
+    std::cout << "Use db url " << dbUrl << std::endl;
 
-
-
-void banner(){
-	std::cout<<"Welcome to 注册登录系统\n";
-	std::cout<<" _______  _____  _     _ _______  ______ _______ __   _ _______ _______\n";
-	std::cout<<" |       |     | |_____| |______ |_____/ |______ | \\  | |       |______\n";
-	std::cout<<" |_____  |_____| |     | |______ |    \\_ |______ |  \\_| |_____  |______\n";
-	std::cout<<"\n";
-	std::cout<<"\"Privacy is the power to selectively reveal oneself to the world.\" \n";
-	std::cout<<"gerante\n";
-	std::cout<<"\n";
+    server->Wait();
 }
 
-void read_fs ( const std::string& filename, std::string& data ){
-  std::ifstream file ( filename.c_str (), std::ios::in );
-	if ( file.is_open () ){
-		std::stringstream ss;
-		ss << file.rdbuf ();
-		file.close ();
-		data = ss.str ();
-	}
-	return;
+static void ShowUsage()
+{
+    std::cout << "Simple user system application\n"
+              << "Usage:\n"
+              << "\tserver [OPTION...]\n\n"
+              << "Help Options:\n"
+              << "\t-h, --help\tShow this help\n\n"
+              << "Application Options:\n"
+              << "\t--enable-ssl\tUse ssl certificate, DO NOT support connect from IP address\n"
+              << "\t--db-url\tDatabase url connect information, e.g mysqlx://root:password@db_host\n"
+              << std::endl;
+    std::exit(EXIT_SUCCESS);
 }
 
-
-
-// Logic and data behind the server's behavior.
-class UserServiceImpl final : public User::Service {
-
-   public:
-  ~UserServiceImpl() {
-  	// 销毁工作
-   // this->Shutdown(); 
-    // 数据库连接
-    mysql_close( &mysql ); /* 关闭连接 */
-
-  }
-  Status Login(ServerContext* context, const UserLoginRequest* request,
-                  UserLoginReply* reply) override {
-    std::string ret_msg;
-    std::cout<< "收到客户端登录信息"<< request->username() <<request->password()<< std::endl;
-    // 设定数据库查询的编码格式为utf-8
-    mysql_query(&mysql, "set names utf8");
-    std::string query_sql("select * from user_info  where username='" +request->username()+ "' and password='"+ request->password() +"'");
-
-    if (mysql_query(&mysql, query_sql.c_str())) 
-    {
-    	std::cout<< "数据库查询失败"<<mysql_error(&mysql) << std::endl;
-		ret_msg = mysql_error(&mysql);
-    	reply->set_message("数据库查询失败: " + ret_msg);
-
-    } else {
-
-    	// 获得查询的数据
-    	res = mysql_store_result(&mysql);
-    	// 获取返回数据的行数
-    	int data_num = mysql_affected_rows(&mysql);
-		std::cout<< "数据库返回的数据条数: "<< data_num << std::endl;
-
-		if (data_num < 1) {
-			reply->set_message("无法登陆，不存在此人！");
-		} else {
-				// 获取返回数据的列名 存储在field中
-			for (int i = 0; fd = mysql_fetch_field(res); i++)  //获取字段名  
-				std::strcpy(field[i], fd->name);
-
-			int j = mysql_num_fields(res);  // 获取列数  
-			// for (int i = 0; i<j; i++)  //打印字段  
-				// printf("%10s\t", field[i]);
-			// printf("\n");
-
-			while (column = mysql_fetch_row(res))
-			{
-				for (int i = 0; i<j; i++)
-				{
-					std::string field_tmp = field[i];
-					if (field_tmp == "id_card_num") {
-						ret_msg = column[i];
-						reply->set_message("登录成功！身份证号码为: " + ret_msg);
-					}
-				}
-				// 	printf("%10s\t", column[i]);
-				// printf("\n");
-			}
-		}
-		
+int main(int argc, char* argv[])
+{
+    if (argc == 2 && (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help")) {
+        ShowUsage();
     }
 
-    return Status::OK;
-  }
-  Status Register(ServerContext* context, const UserRegisterRequest* request,
-                  UserRegisterReply* reply) override {
+    // ssl server didn't support connect from IP address
+    bool sslSupport = false;
+    std::string dbUrl(DEFAULT_DB_URL);
+    for (int i = 0; i < argc; i++) {
+        if (std::string(argv[i]) == "--enable-ssl") {
+            sslSupport = true;
+        }
 
-	std::string ret_msg;
+        if (std::string(argv[i]) == "--db-url" && (i+1) < argc) {
+            dbUrl = std::string(argv[i+1]);
+        }
+    }
 
-    std::cout<< "收到客户端注册信息"<< request->username() <<request->password()<<request->cardnum()<<request->name()<< std::endl;
-//	//可以想办法实现手动在控制台手动输入指令  
-	std::string  insert_sql = "insert into user_info (username, password, name, id_card_num, state)values ( '" + request->username() + "', '" + 
-		request->password() + "','" + request->name() + "','" + request->cardnum() + "','1');";
-    std::cout<< insert_sql << std::endl;
-	mysql_query(&mysql, "set names utf8");
-	if (mysql_query(&mysql, insert_sql.c_str()))        //执行SQL语句  
-	{
-		ret_msg = mysql_error(&mysql);
-		reply->set_message("注册失败: " + ret_msg);
-	}
-	else
-	{
-		reply->set_message("注册成功！: " + ret_msg);
-	}
-
-    return Status::OK;
-  }
-};
-
-void RunServer() {
-
-	// std::string key;
-	// std::string cert;
-	// std::string root;
-
-	// read_fs ( "server.crt", cert );
-	// read_fs ( "server.key", key );
-	// read_fs ( "ca.crt", root );
-
-
- //    grpc::SslServerCredentialsOptions::PemKeyCertPair keycert ={key,cert};
- //    grpc::SslServerCredentialsOptions sslOps;
- //    sslOps.pem_root_certs = root;
- //    sslOps.pem_key_cert_pairs.push_back ( keycert );
-
-    // std::string server_address(addr.c_str());
-
-    // ServerBuilder builder;
-    // builder.AddListeningPort(server_address, grpc::SslServerCredentials( sslOps ));
-    // builder.RegisterService(&service_);
-    // cq_ = builder.AddCompletionQueue();
-    // server_ = builder.BuildAndStart();
-
-
-
-	std::string server_address("0.0.0.0:3389");
-	UserServiceImpl service;
-
-	ServerBuilder builder;
-	// Listen on the given address without any authentication mechanism.
-	// builder.AddListeningPort(server_address, grpc::SslServerCredentials( sslOps ));
-	builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-	// Register "service" as the instance through which we'll communicate with
-	// clients. In this case it corresponds to an *synchronous* service.
-	builder.RegisterService(&service);
-	// Finally assemble the server.
-	std::unique_ptr<Server> server(builder.BuildAndStart());
-
-	//启动数据库的连接
-	mysql_init(&mysql);
-	//mysql_options(&mysql,MYSQL_PORT, "33060");
-	if (mysql_real_connect(&mysql,"106.14.56.249","root","MyNewPass@123","gerante", 33060,NULL,0))
-	{  
-		//printf("连接成功!\n");
-		std::cout<<"连接成功！"<<std::endl;
-	}
-	else
-	{
-		// fprintf(stderr, "Failed to connect to database: Error: %s\n", mysql_error(&mysql));
-		std::cout<<stderr<<"Failed to connect to database: Error: "<< mysql_error(&mysql)<< std::endl;
-	}
-
-
-	std::cout << "Server listening on " << server_address << std::endl;
-
-	// Wait for the server to shutdown. Note that some other thread must be
-	// responsible for shutting down the server for this call to ever return.
-	server->Wait();
-}
-
-int main(int argc, char** argv) {
-  RunServer();
-  return 0;
-}
-
-
-
-
-
-
-
-//插入数据  
-bool InsertData()
-{
-	std::string  username;
-	std::string  name;
-	std::string  id_card_num;
-	std::string  password;
-	std::cout<<"请输入账号名称"<<std::endl;
-	std::cin>> username;  
-	std::cout<<"请输入昵称"<< std::endl;
-	std::cin>>name;
-	std::cout<<"请输入身份证号码"<< std::endl;
-	std::cin>>id_card_num;
-	std::cout<< "请输入密码"<<std::endl;
-	std::cin>>password;
-
-	//	//可以想办法实现手动在控制台手动输入指令  
-	std::string  insert_sql = "insert into user_info (username, password, name, id_card_num, state)values ( '" + username + "', '" + 
-		password + "','" + name + "','" + id_card_num + "','1');";
-    std::cout<< insert_sql << std::endl;
-	mysql_query(&mysql, "set names utf8");
-	if (mysql_query(&mysql, insert_sql.c_str()))        //执行SQL语句  
-	{
-		printf("Query failed (%s)\n", mysql_error(&mysql));
-		return false;
-	}
-	else
-	{
-		printf("Insert success\n");
-		return true;
-	}
-}
-
-//																	 //修改数据  
-bool ModifyData()
-{
-    std::string name;
-	std::string username;
-	std::cout<<"请输入需要更改的账号名:"<<std::endl;
-	std::cin>>username;
-	std::cout<<"请输入需要更改的昵称:"<<std::endl;
-	std::cin>>name;
-
-	std::string modify_sql = "update user_info set name='" + name +"' where username='"+ username +"'";
-	std::cout<< modify_sql<<std::endl;
-	mysql_query(&mysql, "set names utf8");
-	if (mysql_query(&mysql, modify_sql.c_str()))        //执行SQL语句  
-	{
-		printf("Query failed (%s)\n", mysql_error(&mysql));
-		return false;
-	}
-	else
-	{
-		printf("修改成功！ success\n");
-		return true;
-	}
-}
-//删除数据  
-bool DeleteData()
-{
-	/*sprintf(query, "delete from user where id=6");*/
-	std::string delete_sql = "";
-	std::cout<<"please input the sql:"<<std::endl;
-	std::cin>> delete_sql ;  //这里手动输入sql语句  
-	if (mysql_query(&mysql, delete_sql.c_str()))        //执行SQL语句  
-	{
-		printf("Query failed (%s)\n", mysql_error(&mysql));
-		return false;
-	}
-	else
-	{
-		std::cout<<"Insert success"<<std::endl;
-		return true;
-	}
+    RunServer(sslSupport, dbUrl);
+    return EXIT_SUCCESS;
 }

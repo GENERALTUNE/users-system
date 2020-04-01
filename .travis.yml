@@ -11,6 +11,7 @@ services:
 
 script: ./install.sh 
 
+# before_install:
 install:
   - OS=linux
   - ARCH=x86_64
@@ -19,7 +20,19 @@ install:
   - curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
   - sudo apt-get update && sudo apt-get install bazel
   - chmod +x install.sh
-  - sudo apt install libmysqlclient-dev
+  # - sudo apt install libmysqlclient-dev
+  # 下载第三方依赖项目 
+  - git submodule update --init  --recursive
+  # 构建mysql cpp connector begin
+  - cd third_party/mysql-connector-cpp
+  - mkdir  build  &&  cd build  && mkdir target  
+  # - cmake  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='third_party/mysqlcppconn_prebuilt' 
+  # - cmake  mysql-connector-cpp   -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='mysql-connector-cpp-build'
+  - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  -DWITH_JDBC=ON 
+  - cmake --build . --target install 
+  # 构建mysql connector-cpp end
+  - cd ../..
+  # cmake --build mysql-connector-cpp --target install  -j8
   # - wget  https://cdn.mysql.com//Downloads/Connector-C++/libmysqlcppconn-dev_8.0.19-1ubuntu16.04_amd64.deb
   # - sudo dpkg -i libmysqlcppconn-dev_8.0.19-1ubuntu16.04_amd64.deb
 
