@@ -25,6 +25,7 @@ install:
   # 构建mysql cpp connector begin
   - cd third_party 
   - pwd
+  - ls
   - cd mysql-connector-cpp
   - pwd
   - mkdir  build  &&  cd build  && mkdir target  
