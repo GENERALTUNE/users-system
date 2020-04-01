@@ -20,10 +20,10 @@ install:
   - curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
   - sudo apt-get update && sudo apt-get install bazel
 
-  - mkdir -p /usr/local/boost
+  - sudo mkdir -p /usr/local/boost
   - cd  /usr/local/boost
-  - wget http://www.sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
-  - tar -xvzf boost_1_59_0.tar.gz
+  - sudo wget http://www.sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
+  - sudo tar -xvzf boost_1_59_0.tar.gz
   - cd /home/travis/build/GENERALTUNE/users-system
 
   # 下载第三方依赖项目 
