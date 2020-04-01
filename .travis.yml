@@ -19,6 +19,13 @@ install:
   - echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
   - curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
   - sudo apt-get update && sudo apt-get install bazel
+
+  - mkdir -p /usr/local/boost
+  - cd  /usr/local/boost
+  - wget http://www.sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
+  - tar -xvzf boost_1_59_0.tar.gz
+  - cd /home/travis/build/GENERALTUNE/users-system
+
   # 下载第三方依赖项目 
   - git submodule update --init  --recursive
   - pwd
@@ -27,7 +34,8 @@ install:
   - mkdir  build  &&  cd build  && mkdir target  
   # - cmake  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='third_party/mysqlcppconn_prebuilt' 
   # - cmake  mysql-connector-cpp   -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='mysql-connector-cpp-build'
-  - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  -DWITH_JDBC=ON  -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/usr/local/boost
+  - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  -DWITH_JDBC=ON  -DWITH_BOOST=/usr/local/boost 
+   # -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/usr/local/boost
   - cmake --build . --target install 
   # 构建mysql connector-cpp end
   - cd ../../..
