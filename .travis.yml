@@ -22,14 +22,14 @@ install:
   # 下载第三方依赖项目 
   - git submodule update --init  --recursive
   # 构建mysql cpp connector begin
-  - cd third_party/mysql-connector-cpp
+  - cd users-system/third_party/mysql-connector-cpp
   - mkdir  build  &&  cd build  && mkdir target  
   # - cmake  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='third_party/mysqlcppconn_prebuilt' 
   # - cmake  mysql-connector-cpp   -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='mysql-connector-cpp-build'
   - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  -DWITH_JDBC=ON 
   - cmake --build . --target install 
   # 构建mysql connector-cpp end
-  - cd ../..
+  - cd ../../..
   # 赋予编译权限
   - chmod +x install.sh
   # - sudo apt install libmysqlclient-dev
