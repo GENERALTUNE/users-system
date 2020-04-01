@@ -23,7 +23,8 @@ install:
   - git submodule update --init  --recursive
   - pwd
   # 构建mysql cpp connector begin
-  - cd users-system/third_party/mysql-connector-cpp
+  - cd third_party &&  cd mysql-connector-cpp
+  - pwd
   - mkdir  build  &&  cd build  && mkdir target  
   # - cmake  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='third_party/mysqlcppconn_prebuilt' 
   # - cmake  mysql-connector-cpp   -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='mysql-connector-cpp-build'
