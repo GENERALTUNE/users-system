@@ -1,5 +1,4 @@
-[submodule "mysql-connector-cpp"]
+[submodule "third_party/mysql-connector-cpp"]
 	path = third_party/mysql-connector-cpp
-	url = https://github.com/mysql/mysql-connector-cpp
+	url = https://github.com/mysql/mysql-connector-cpp.git
 	branch = 8.0
-
