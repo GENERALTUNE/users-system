@@ -4,7 +4,7 @@ load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 cc_binary(
     name = "server",
-    srcs = glob(["server.cc", "server/*.cc", "server/*.h"]),
+    srcs = glob(["server.cc", "server/*.cc", "server/*.h", "server/**/*.h"]),
     copts = [
       #   "-I/usr/local/include",
 	    	# "-I/usr/local/include/mysql",
