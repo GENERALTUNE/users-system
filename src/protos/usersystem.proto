@@ -42,19 +42,19 @@ message Geo {
 message UserModel {
     required string id = 1;
     required string username = 2;
-    optional string password = 3;
-    optional int32 age = 4;
+    string password = 3;
+    int32 age = 4;
 
     enum UserGender {
         MALE = 0;
         FEMALE = 1;
         NEUTER = 2;
     }
-    optional UserGender gender = 5;
-    optional string phone_number = 6;
-    optional Geo geo = 7;
-    optional uint64 create_at_millis = 8;
-    optional uint64 update_at_millis = 9;
+    UserGender gender = 5;
+    string phone_number = 6;
+    Geo geo = 7;
+    uint64 create_at_millis = 8;
+    uint64 update_at_millis = 9;
 }
 
 message UserLoginHistoryModel {
@@ -64,17 +64,17 @@ message UserLoginHistoryModel {
     required string device_id = 4;
     required Platform from_platform = 5;
     required bool is_valid = 6;
-    optional uint64 create_at_millis = 7;
-    optional uint64 update_at_millis = 8;
-    optional uint64 expire_at_millis = 9;
+    uint64 create_at_millis = 7;
+    uint64 update_at_millis = 8;
+    uint64 expire_at_millis = 9;
 }
 
 message CommonResponse {
     required ResponseCode code = 1;
-    optional string message = 2;
-    optional int32 grpc_error_code = 3;
-    optional string grpc_error_message = 4;
-    optional string grpc_error_details = 5;
+    string message = 2;
+    int32 grpc_error_code = 3;
+    string grpc_error_message = 4;
+    string grpc_error_details = 5;
 }
 
 message RegisterRequest {
@@ -86,8 +86,8 @@ message RegisterRequest {
 
 message RegisterResponse {
     required CommonResponse response = 1;
-    optional UserModel userModel = 2;
-    optional string token = 3;
+    UserModel userModel = 2;
+    string token = 3;
 }
 
 message LoginRequest {
@@ -95,13 +95,13 @@ message LoginRequest {
     required string password = 2;
     required string device_id = 3;
     required Platform platform = 4;
-    optional Geo geo = 5;
+    Geo geo = 5;
 }
 
 message LoginResponse {
     required CommonResponse response = 1;
-    optional UserModel userModel = 2;
-    optional string token = 3;
+    UserModel userModel = 2;
+    string token = 3;
 }
 
 message CheckLoginRequest {
@@ -109,7 +109,7 @@ message CheckLoginRequest {
     required string token = 2;
     required string device_id = 3;
     required Platform from_platform = 4;
-    optional Geo geo = 5;
+    Geo geo = 5;
 }
 
 message CheckLoginResponse {
