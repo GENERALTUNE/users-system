@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 // #include "usersystem.pb.h"
-#include "src/protos/usersystem.grpc.pb.h";
+#include "src/protos/usersystem.grpc.pb.h"
 
 class AbstractDbConnector {
 

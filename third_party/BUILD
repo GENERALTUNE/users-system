@@ -5,11 +5,12 @@ cc_library(
         "mysql-connector-cpp/build/target/lib64/*.so",
     ]),
     hdrs = glob([
-        "mysql-connector-cpp/build/target/include/jdbc/cppconn/*.h",
+        # "mysql-connector-cpp/build/target/include/jdbc/cppconn/*.h",
+        "mysql-connector-cpp/build/target/include/**/*.h",
     ]),
     # hdrs = ["mysql-connector-cpp/include/jdbc/cppconn/driver.h"],
     includes = [
-        "mysql-connector-cpp/build/target/include/jdbc/cppconn/",
+        # "mysql-connector-cpp/build/target/include/jdbc/cppconn/",
     ],
     # include_prefix = "third_party/mysql-connector/include/jdbc/cppconn",
     linkstatic = 0,
