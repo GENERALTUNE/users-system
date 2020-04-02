@@ -5,8 +5,9 @@
 #include <chrono>
 #include <string>
 #include <sstream>
-#include "usersystem.pb.h"
-#include "mysqlx/xdevapi.h"
+// #include "usersystem.pb.h"
+#include "src/protos/usersystem.grpc.pb.h"
+#include "third_party/mysql-connector-cpp/build/target/include/mysqlx/xdevapi.h"
 #include <openssl/sha.h>
 
 struct Utils {

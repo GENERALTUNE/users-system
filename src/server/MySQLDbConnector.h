@@ -3,7 +3,7 @@
 #define USERSYSTEM_MYSQLDBCONNECTOR_H
 
 #include "AbstractDbConnector.h"
-#include "mysqlx/xdevapi.h"
+#include "third_party/mysql-connector-cpp/build/target/include/mysqlx/xdevapi.h"
 #include "Utils.h"
 
 static constexpr auto DB_NAME = "usersystem";
