@@ -30,6 +30,7 @@ install:
   - sudo apt-get install libboost-all-dev
   - ls /usr/local
   - ls /usr/local/lib
+  - ls /usr/local/include
   - ls /usr/share
   - ls /usr/lib
   - ls /usr/share/boost-build
