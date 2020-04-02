@@ -35,13 +35,13 @@ enum Platform {
 }
 
 message Geo {
-    required double lat = 1;
-    required double lng = 2;
+    double lat = 1;
+    double lng = 2;
 }
 
 message UserModel {
-    required string id = 1;
-    required string username = 2;
+    string id = 1;
+    string username = 2;
     string password = 3;
     int32 age = 4;
 
@@ -58,19 +58,19 @@ message UserModel {
 }
 
 message UserLoginHistoryModel {
-    required string id = 1;
-    required string username = 2;
-    required string token = 3;
-    required string device_id = 4;
-    required Platform from_platform = 5;
-    required bool is_valid = 6;
+    string id = 1;
+    string username = 2;
+    string token = 3;
+    string device_id = 4;
+    Platform from_platform = 5;
+    bool is_valid = 6;
     uint64 create_at_millis = 7;
     uint64 update_at_millis = 8;
     uint64 expire_at_millis = 9;
 }
 
 message CommonResponse {
-    required ResponseCode code = 1;
+    ResponseCode code = 1;
     string message = 2;
     int32 grpc_error_code = 3;
     string grpc_error_message = 4;
@@ -78,37 +78,37 @@ message CommonResponse {
 }
 
 message RegisterRequest {
-    required string username = 1;
-    required string password = 2;
-    required string device_id = 3;
-    required Platform platform = 4;
+    string username = 1;
+    string password = 2;
+    string device_id = 3;
+    Platform platform = 4;
 }
 
 message RegisterResponse {
-    required CommonResponse response = 1;
+    CommonResponse response = 1;
     UserModel userModel = 2;
     string token = 3;
 }
 
 message LoginRequest {
-    required string username = 1;
-    required string password = 2;
-    required string device_id = 3;
-    required Platform platform = 4;
+    string username = 1;
+    string password = 2;
+    string device_id = 3;
+    Platform platform = 4;
     Geo geo = 5;
 }
 
 message LoginResponse {
-    required CommonResponse response = 1;
+    CommonResponse response = 1;
     UserModel userModel = 2;
     string token = 3;
 }
 
 message CheckLoginRequest {
-    required string username = 1;
-    required string token = 2;
-    required string device_id = 3;
-    required Platform from_platform = 4;
+    string username = 1;
+    string token = 2;
+    string device_id = 3;
+    Platform from_platform = 4;
     Geo geo = 5;
 }
 
