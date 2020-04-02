@@ -34,7 +34,7 @@ install:
   - ls /usr/lib
   - ls /usr/share/boost-build
   # - ldconfig -l | grep boost
-  - ls /usr/local/boost
+  # - ls /usr/local/b
   # 下载第三方依赖项目 
   - git submodule update --init  --recursive
   - pwd
