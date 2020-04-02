@@ -9,7 +9,7 @@
 #include <condition_variable>
 // #include "usersystem.pb.h"
 // #include "usersystem.grpc.pb.h"
-#include "src/protos/usersystem.pb.h"
+// #include "src/protos/usersystem.pb.h"
 #include "src/protos/usersystem.grpc.pb.h"
 #include "MySQLDbConnector.h"
 
