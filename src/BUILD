@@ -16,7 +16,7 @@ cc_binary(
     deps = [
     	"//src/protos:usersystem_cc_grpc",
     	"@com_github_grpc_grpc//:grpc++",
-        "//third_party/mysql-connector-cpp:mysql_connector"
+        "//third_party:mysql_connector"
     ]
 )
 
