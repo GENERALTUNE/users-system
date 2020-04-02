@@ -26,13 +26,13 @@ install:
   # - sudo tar -xvzf boost_1_59_0.tar.gz
   # - cd /home/travis/build/GENERALTUNE/users-system
   # 安装boost 
-  - sudo apt-get install libboost-dev
-  - sudo apt-get install libboost-all-dev
+  # - sudo apt-get install libboost-dev
+  # - sudo apt-get install libboost-all-dev
 
-  - find /usr  -name boost
-  - sudo find /home -name boost
-  - sudo find /root -name  boost
-  - sudo find /var -name boost
+  # - find /usr  -name boost
+  # - sudo find /home -name boost
+  # - sudo find /root -name  boost
+  # - sudo find /var -name boost
   # - ldconfig -l | grep boost
   # - ls /usr/local/b
   # 下载第三方依赖项目 
@@ -43,7 +43,8 @@ install:
   - mkdir  build  &&  cd build  && mkdir target  
   # - cmake  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='third_party/mysqlcppconn_prebuilt' 
   # - cmake  mysql-connector-cpp   -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='mysql-connector-cpp-build'
-  - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  -DWITH_JDBC=ON  -DWITH_BOOST=/usr/include/boost
+  # - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  -DWITH_JDBC=ON  -DWITH_BOOST=/usr/include/boost
+  - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  
    # -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/usr/local/boost
   - cmake --build . --target install 
   # 构建mysql connector-cpp end
