@@ -29,8 +29,10 @@ install:
   # - sudo apt-get install libboost-dev
   - sudo apt-get install libboost-all-dev
   - ls /usr/local
+  - ls /usr/local/lib
   - ls /usr/share
   - ls /usr/lib
+  - ls /usr/share/boost-build
   # - ldconfig -l | grep boost
   - ls /usr/local/boost
   # 下载第三方依赖项目 
@@ -41,7 +43,7 @@ install:
   - mkdir  build  &&  cd build  && mkdir target  
   # - cmake  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='third_party/mysqlcppconn_prebuilt' 
   # - cmake  mysql-connector-cpp   -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX='mysql-connector-cpp-build'
-  - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  -DWITH_JDBC=ON  -DWITH_BOOST=/usr/local/boost 
+  - cmake  ..  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=./target  -DWITH_JDBC=ON  -DWITH_BOOST=/usr/share/boost-build
    # -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/usr/local/boost
   - cmake --build . --target install 
   # 构建mysql connector-cpp end
