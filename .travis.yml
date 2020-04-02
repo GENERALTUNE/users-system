@@ -34,7 +34,7 @@ install:
   - ls /usr/share
   - ls /usr/lib
   - ls /usr/include
-  - ls /usr/share/boost-build
+  - ls /usr/include/boost
   # - ldconfig -l | grep boost
   # - ls /usr/local/b
   # 下载第三方依赖项目 
