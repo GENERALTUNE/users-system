@@ -30,6 +30,9 @@ install:
   - sudo apt-get install libboost-all-dev
 
   - find /usr  -name boost
+  - find /home -name boost
+  - find /root -name  boost
+  - find /var -name boost
   # - ldconfig -l | grep boost
   # - ls /usr/local/b
   # 下载第三方依赖项目 
