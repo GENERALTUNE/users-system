@@ -26,9 +26,11 @@ install:
   # - sudo tar -xvzf boost_1_59_0.tar.gz
   # - cd /home/travis/build/GENERALTUNE/users-system
   # 安装boost 
-  # -sudo apt-get install libboost-dev
+  # - sudo apt-get install libboost-dev
   - sudo apt-get install libboost-all-dev
-
+  - ls /usr/local
+  - ldconfig -l | grep boost
+  - ls /usr/local/boost
   # 下载第三方依赖项目 
   - git submodule update --init  --recursive
   - pwd
