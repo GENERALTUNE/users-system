@@ -82,6 +82,70 @@ void read ( const std::string& filename, std::string& data ){
 }
 
 
+class UserClient {
+ public:
+  UserClient(std::shared_ptr<Channel> channel)
+      : stub_(User::NewStub(channel)) {}
+
+  // Assembles the client's payload, sends it and presents the response back
+  // from the server.
+  std::string Login(const std::string& username, const std::string& password) {
+    // Data we are sending to the server.
+    UserLoginRequest request;
+    request.set_username(username);
+    request.set_password(password);
+
+    // Container for the data we expect from the server.
+    UserLoginReply reply;
+
+    // Context for the client. It could be used to convey extra information to
+    // the server and/or tweak certain RPC behaviors.
+    ClientContext context;
+
+    // The actual RPC.
+    Status status = stub_->Login(&context, request, &reply);
+
+    // Act upon its status.
+    if (status.ok()) {
+      return reply.message();
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+      return "RPC failed";
+    }
+  }
+
+  std::string Register(const std::string& username, const std::string& password, const std::string& cardnum, const std::string& name) {
+    // Data we are sending to the server.
+    UserRegisterRequest request;
+    request.set_username(username);
+    request.set_password(password);
+    request.set_cardnum(cardnum);
+    request.set_name(name);
+
+    // Container for the data we expect from the server.
+    UserRegisterReply reply;
+
+    // Context for the client. It could be used to convey extra information to
+    // the server and/or tweak certain RPC behaviors.
+    ClientContext context;
+
+    // The actual RPC.
+    Status status = stub_->Register(&context, request, &reply);
+
+    // Act upon its status.
+    if (status.ok()) {
+      return reply.message();
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+      return "RPC failed";
+    }
+  }
+
+ private:
+  std::unique_ptr<User::Stub> stub_;
+};
 
 int main(int argc, char** argv) {
   // Instantiate the client. It requires a channel, out of which the actual RPCs
@@ -104,11 +168,8 @@ int main(int argc, char** argv) {
   // GreeterClient user(grpc::CreateChannel(
   //     "localhost:50051", channel_creds));
 
-    UserSystemClient user_client(grpc::CreateChannel(
+    UserClient user(grpc::CreateChannel(
       "106.14.56.249:3389", grpc::InsecureChannelCredentials()));
-
-     std::string device_id = GenerateTimestampDeviceID();
-
     std::string choose_func;
     std::cout << "请选择功能: 1 登录  2 注册"<<std::endl;
     std::cin >> choose_func ;
@@ -121,20 +182,9 @@ int main(int argc, char** argv) {
       std::cout << "请输入你的密码"<<std::endl;
       std::cin>>password;  
       std::cout<< "已输入账号密码为："<<username << password<<std::endl;
+      std::string reply = user.Login(username, password);
+      std::cout << "服务器返回信息: " << reply << std::endl;
 
-      auto loginResponse = user_client.Login("john", "123456", device_id, usersystem::Platform::Type_Desktop);
-      if (loginResponse.response().code() == usersystem::ResponseCode::OK) {
-          std::cout << "登录成功！ " << loginResponse.usermodel().username() << ' '
-                    << loginResponse.token() << std::endl;
-      } else {
-          if (loginResponse.response().code() == usersystem::ResponseCode::ERROR_LOGIN_WRONG_USERNAME) {
-              std::cerr << "用户名错误！" << std::endl;
-          } else if (loginResponse.response().code() == usersystem::ResponseCode::ERROR_LOGIN_WRONG_PASSWORD) {
-              std::cerr << "密码错误！" << std::endl;
-          }
-      }
-      // std::string reply = user.Login(username, password);
-      // std::cout << "服务器返回信息: " << reply << std::endl;
 
     } else if (choose_func == "2") {
       //注册逻辑
@@ -146,18 +196,14 @@ int main(int argc, char** argv) {
       std::cin >> username;
       std::cout << "请输入密码"<<std::endl;
       std::cin >> password;
-      // std::cout << "请输入身份证号"<<std::endl;
-      // std::cin >> cardnum;
-      // std::cout << "请输入昵称"<<std::endl;
-      // std::cin >> name;
-      std::cout<< "已输入账号密码为："<<username << password<<std::endl;
-      auto response = user_client.Register(username, password, device_id, usersystem::Platform::Type_Desktop);
-      if (response.response().code() == usersystem::ResponseCode::ERROR_REGISTER_USERNAME_HAS_BEEN_TAKEN) {
-          std::cerr << "已存在用户！" <<  response.response().code() << std::endl;
-      } else {
-          std::cout << "注册成功！" << response.usermodel().username() << ' '
-                    << response.usermodel().id() << std::endl;
-      }
+      std::cout << "请输入身份证号"<<std::endl;
+      std::cin >> cardnum;
+      std::cout << "请输入昵称"<<std::endl;
+      std::cin >> name;
+      std::cout<< "已输入账号密码身份证昵称为："<<username << password<<std::endl;
+      std::string reply = user.Register(username, password, cardnum, name);
+      std::cout << "服务器返回信息: " << reply << std::endl;
+
 
     } else {
       //输入错误！

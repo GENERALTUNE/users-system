@@ -1,133 +1,75 @@
-# 说明文档
+Cross platform user login system based on gRPC
+======
 
-## cgi
-http://www.gnu.org/software/cgicc/doc/index.html
+A user register/login system based on gRPC C++, the client also implement in C++ and Android/iOS can share a same code base.
 
-### 编译数据库连接语句
- g++    cpp_conn_mysql.cc -L /usr/include/mysql   -L /usr/lib64/mysql -lmysqlclient
+Just a simple demo application, including the following features
 
-##  bazel
+* User register
+* User login
+* User logout
+* Client can received logout event if the same user login from a different new device, disable duplicated login
+* Sensitive data is protected by `sslserver`/`sslchannel` only if client connect to server by hostname, fallback to `insecureserver`/`insecurechannel` if client connect to server by IP address which means the system is vulnerable 
+* Use mysql and `mysqlx` protocol api for data persistence
+* Currently, user password is stored via simple hash(`sha256`) algorithm, replace it with more security `bcrypt` password encoder
 
-### 查看依赖图
-bazel query --nohost_deps --noimplicit_deps 'deps(//main:hello-world)' --output graph
+The following picture illustrate the design of this system from a developer perspective.
+![System structure](docs/usersystem_structure.png)
 
-## Centos7.3编译安装grpc
 
-###  安装工具
-```shell
-yum install -y gcc gcc-c++ autoconf libtool
-yum groupinstall -y "Development Tools"
 
+##### Prepare for Linux
+
+In order to keep the same environment with docker, follow the [guide](https://github.com/grpc/grpc/blob/master/BUILDING.md) to build and install gPRC C++ for Linux, then install the requisite `libssl-dev` and `cmake`
 ```
-### 下载源码
-```shell
-git clone https://github.com/grpc/grpc.git
-cd grpc
-git submodule update --init
+$ apt install libssl-dev cmake
 ```
 
-### 编译安装protobuf
-```shell
-cd third_party/protobuf/
-./autogen.sh
-./configure
-make
-make install
-ldconfig # refresh shared library cache.
-which protoc
-protoc --version
-```
-## 编译安装 grpc
-```shell
-make  
-make install
+##### Build this project
+ ci  by travis
 ```
 
 
-## 测试C++ Demo
-```shell
-cd examples/cpp/helloworld
-make
-```
+How to prevent multiple login
+------
+The following steps and picture illustrate how to disable multiple login for same user from different devices.
 
-### 启动服务器端和客户端
-```shell
-#启动服务器
-./greeter_server 
-# 启动客户端
-./greeter_client
+1. user login in `Device1` with user/pass/device_id_1
+2. new login record on server `user/device_id_1`
+3. user check login status in `Device1` and waiting
+4. user login in `Device2` with user/pass/device_id_2
+5. new login record on server `user/device_id_2`
+6. login record does not match for `Device1`, notify user in `Device1` to logout
 
-```
-报错  ./greeter_client: error while loading shared libraries: libprotobuf.so.22: cannot open shared object file: No such file or directory
-### 解决
-```shell
-export LD_LIBRARY_PATH=/usr/local/lib
-
-echo $LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/usr/local/lib/:/root/git/grpc/libs/opt/
-export LD_LIBRARY_PATH=/usr/local/lib/:/root/grpc/libs/opt/
-```
-
-### 报错解决
-echo $PKG_CONFIG_PATH
-export PKG_CONFIG_PATH=/root/git/grpc/libs/opt/pkgconfig:/root/git/grpc/third_party/protobuf
-export PKG_CONFIG_PATH=/root/grpc/libs/opt/pkgconfig:/root/grpc/third_party/protobuf
-
-
-相关命令简介:
-    make uninstall : 卸载命令
-    make clean : 清除编译产生的可执行文件及目标文件 (object file，*.o)。
-    make distclean : 除了清除可执行文件和目标文件外，把 configure 所产生的 Makefile 也清除掉。
-    ldconfig : 更新共享库缓存
-    ldconfig -p|grep proto : 查看protobuf库相关的库
-    which protoc : 查看软件的安装位置
-    protoc --version : 检查是否安装成功
-配置环境变量
-```shell
-vim ~/.bash_profile
-    PATH=$PATH:$HOME/bin:/root/grpc/bins/opt
-    export PATH
-    export LD_LIBRARY_PATH=/usr/local/lib/:/root/grpc/libs/opt
-    export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-source ~/.bash_profile
-ldconfig
-```
-
-
-## ubuntu 16.04 
- wget  https://cdn.mysql.com//Downloads/Connector-C++/libmysqlcppconn-dev_8.0.19-1ubuntu16.04_amd64.deb
- sudo dpkg -i libmysqlcppconn-dev_8.0.19-1ubuntu16.04_amd64.deb
- 
- sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
-下载
-  wget https://repo.mysql.com//mysql-apt-config_0.8.10-1_all.deb 
-<!-- dpkg -i -->
-<!-- rpm -ivh your-package -->
+![Disable multiple login](doc/multiple_login.png)
 
 
 
-## 参考
-c++ 持久化解决方案
-https://blog.csdn.net/dean_zhang5757/article/details/104845096
-https://www.codesynthesis.com/products/odb/doc/manual.xhtml
-windows下安装grpc
-https://blog.csdn.net/liyangbinbin/article/details/100134465
-### travis 
-https://www.cnblogs.com/morang/p/7228488.html
-### travis & bazel
-https://www.geek-share.com/detail/2758685060.html
-### bazel c++
-https://blog.csdn.net/elaine_bao/article/details/78668657
-### c++ 连接mysql
-https://blog.csdn.net/yuhan61659/article/details/82706072
+TODO
+------
+* use bcrypt password hashing algorithm to hash user password instead use the simple SHA256
 
 
-## 制作签名证书
-```shell
-openssl ecparam -genkey -name secp384r1 -out server.key
+Reference
+------
+* [Generating a self-signed certificate using OpenSSL](https://www.ibm.com/support/knowledgecenter/en/SSMNED_5.0.0/com.ibm.apic.cmc.doc/task_apionprem_gernerate_self_signed_openSSL.html)
+* [How to create a self-signed certificate with OpenSSL](https://stackoverflow.com/questions/10175812/how-to-create-a-self-signed-certificate-with-openssl)
+* [gPRC Docker Library](https://github.com/grpc/grpc-docker-library)
+* [low-memory-mysql](https://github.com/alexanderkoller/low-memory-mysql)
+* [COMPOSE_HTTP_TIMEOUT](https://stackoverflow.com/questions/36488209/how-to-override-the-default-value-of-compose-http-timeout-with-docker-compose-co)
+* [MySQL docker compose options](https://stackoverflow.com/questions/46004648/how-to-setup-mysql-with-utf-8-using-docker-compose)
+* [MySQL docker hub](https://hub.docker.com/_/mysql)
+* [jwt-cpp](https://github.com/Thalhammer/jwt-cpp)
 
-openssl req -new -x509 -sha256 -key server.key -out server.pem -days 3650
-```
+##### MySQL Reference
+* [MySQL Connector C++ in Github](https://github.com/mysql/mysql-connector-cpp)
+* [Install MySQL Connector C++ in Ubuntu](https://stackoverflow.com/questions/51117349/cannot-install-mysql-connector-c-correctly-in-my-ubuntu)
+* [MySQL Connector/C++ 8.0 Developer Guide](https://dev.mysql.com/doc/connector-cpp/8.0/en/)
+* [MySQL Connector/C++ Documentation](https://dev.mysql.com/doc/dev/connector-cpp/8.0/)
+* [Working with documents](https://docs.oracle.com/cd/E17952_01/x-devapi-userguide-en/devapi-users-working-with-documents.html)
 
-## grpc 支持 ssl/ts
-https://blog.csdn.net/m0_46083365/article/details/103744750?utm_source=blogxgwz7
+##### Android Reference
+* [Build gRPC C++ for Android](https://stackoverflow.com/questions/54052229/build-grpc-c-for-android-using-ndk-arm-linux-androideabi-clang-compiler)
+* [Protobuf Java lite](https://github.com/protocolbuffers/protobuf/blob/master/java/lite.md)
+* [Connect gRPC ssl server with IP address error](https://blog.csdn.net/u011627161/article/details/87936361)
+* [gRPC server ssl with IP error](https://zhuanlan.zhihu.com/p/35507832)

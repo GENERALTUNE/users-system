@@ -25,7 +25,7 @@ cc_binary(
     # srcs = ["client.cc"], 
     srcs = glob(["client.cc", "client/*.cc", "client/*.h", "client/**/*.h"]),
     deps = [
-    	"//src/protos:user_cc_grpc",
+    	"//src/protos:usersystem_cc_grpc",
     	"@com_github_grpc_grpc//:grpc++"
     ]
 )
