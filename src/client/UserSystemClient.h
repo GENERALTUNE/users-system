@@ -1,6 +1,3 @@
-//
-// Created by Wanghong Lin on 2019/10/22.
-//
 
 #ifndef USERSYSTEM_USERSYSTEMCLIENT_H
 #define USERSYSTEM_USERSYSTEMCLIENT_H
@@ -8,9 +5,11 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include <grpc++/grpc++.h>
-#include "usersystem.pb.h"
-#include "usersystem.grpc.pb.h"
+// #include <grpc++/grpc++.h>
+#include <grpcpp/grpcpp.h>
+// #include "usersystem.pb.h"
+// #include "usersystem.grpc.pb.h"
+#include "src/protos/usersystem.grpc.pb.h"
 
 class UserSystemClient {
 

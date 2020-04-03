@@ -20,14 +20,15 @@ cc_binary(
     ]
 )
 
-# cc_binary(
-#     name = "client",
-#     srcs = ["client.cc"], 
-#     deps = [
-#     	"//src/protos:user_cc_grpc",
-#     	"@com_github_grpc_grpc//:grpc++"
-#     ]
-# )
+cc_binary(
+    name = "client",
+    # srcs = ["client.cc"], 
+    srcs = glob(["client.cc", "client/*.cc", "client/*.h", "client/**/*.h"]),
+    deps = [
+    	"//src/protos:user_cc_grpc",
+    	"@com_github_grpc_grpc//:grpc++"
+    ]
+)
 
 # cc_binary(
 #     name = "test",
