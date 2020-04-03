@@ -30,7 +30,8 @@
 // #ifdef BAZEL_BUILD
 // #include "examples/protos/user.grpc.pb.h"
 // #else
-#include "src/protos/user.grpc.pb.h"
+// #include "src/protos/user.grpc.pb.h"
+#include "src/protos/usersystem.grpc.pb.h"
 // #endif
 
 const char* CERT_PEM = R"cert(
