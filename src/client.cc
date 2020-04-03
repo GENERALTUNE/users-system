@@ -58,14 +58,14 @@ static std::string GenerateTimestampDeviceID()
     return std::to_string(std::chrono::system_clock().now().time_since_epoch().count());
 }
 
-using grpc::Channel;
-using grpc::ClientContext;
-using grpc::Status;
-using user::UserLoginRequest;
-using user::UserLoginReply;
-using user::UserRegisterRequest;
-using user::UserRegisterReply;
-using user::User;
+// using grpc::Channel;
+// using grpc::ClientContext;
+// using grpc::Status;
+// using user::UserLoginRequest;
+// using user::UserLoginReply;
+// using user::UserRegisterRequest;
+// using user::UserRegisterReply;
+// using user::User;
 
 
 
